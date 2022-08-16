@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-
+from models.hotel import HotelModel
 
 hoteis = [
     {
@@ -24,6 +24,7 @@ hoteis = [
         'cidade': 'Natal'
     },
 ]
+
 
 
 class Hoteis(Resource):
@@ -55,7 +56,7 @@ class Hotel(Resource):
     argumentos.add_argument('nome')
     argumentos.add_argument('estrelas')
     argumentos.add_argument('diaria')
-    
+
     argumentos.add_argument('cidade')
 
     def find_hotel(self, hotel_id):
@@ -95,24 +96,30 @@ class Hotel(Resource):
             _type_: _description_
         """
         dados = Hotel.argumentos.parse_args()
-
-        novo_hotel = {
-            'hotel_id': hotel_id,
-            'nome': dados['nome'],
-            'estrelas': dados['estrelas'],
-            'diaria': dados['diaria'],
-            'cidade': dados['cidade']
-        }
-
+        hotel_objeto = HotelModel(hotel_id, **dados)
+        novo_hotel = hotel_objeto.json()
         hoteis.append(novo_hotel)
         return novo_hotel, 200
 
     def put(self, hotel_id):
         """_summary_
 
+
         Args:
             hotel_id (_type_): _description_
         """
+        dados = Hotel.argumentos.parse_args()
+        hotel_objeto = HotelModel(hotel_id, **dados)
+        novo_hotel = hotel_objeto.json()
+        hoteis.append(novo_hotel)
+
+        hotel = Hotel.find_hotel(self, hotel_id)
+        if hotel:
+            hotel.update(novo_hotel)
+            return novo_hotel, 200
+        hoteis.append(novo_hotel)
+        return novo_hotel, 201
+
 
     def delete(self, hotel_id):
         """_summary_
@@ -120,5 +127,6 @@ class Hotel(Resource):
         Args:
             hotel_id (_type_): _description_
         """
-
-
+        Hotel.hoteis = [hotel for hotel in Hotel.hoteis if hotel['hotel_id'] != hotel_id]
+        return {'message': 'Hotel deleted'}
+        
