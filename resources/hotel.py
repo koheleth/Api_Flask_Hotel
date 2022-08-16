@@ -55,6 +55,7 @@ class Hotel(Resource):
     argumentos.add_argument('nome')
     argumentos.add_argument('estrelas')
     argumentos.add_argument('diaria')
+    
     argumentos.add_argument('cidade')
 
     def find_hotel(self, hotel_id):
