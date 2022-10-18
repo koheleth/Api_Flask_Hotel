@@ -7,7 +7,7 @@ class HotelModel:
         self.cidade = cidade
 
     def json(self):
-        return {
+        return {                                                                                    
             'hotel_id': self.hotel_id,
             'nome': self.nome,
             'estrelas': self.estrelas,
