@@ -20,6 +20,7 @@ insere_hotel.append("INSERT INTO hoteis values('Gama', 'Hostel Gama', 4.3, 300.1
 insere_hotel.append("INSERT INTO hoteis values('zeta', 'zeta hotel', 4.3, 300.14, 'Recife')")
 
 
+
 c = 0
 for i in insere_hotel:
     c += 1
